@@ -1,0 +1,30 @@
+{
+  "name": "pdf-compressor-automation",
+  "version": "1.0.0",
+  "description": "Automated PDF compression tool with a Web GUI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "dev:frontend": "vite",
+    "build": "vite build",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:frontend\""
+  },
+  "keywords": [
+    "pdf",
+    "ghostscript",
+    "automation",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "vite": "^7.2.7"
+  }
+}

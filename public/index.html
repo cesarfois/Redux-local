@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Compressor Automator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>PDF Compressor <span id="statusIndicator" class="status-indicator"></span></h1>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="sourcePath">Pasta de Origem (Watch Folder)</label>
+                <input type="text" id="sourcePath" placeholder="C:\Caminho\Para\Origem">
+            </div>
+
+            <div class="form-group">
+                <label for="destPath">Pasta de Destino</label>
+                <input type="text" id="destPath" placeholder="C:\Caminho\Para\Destino">
+            </div>
+
+            <div class="form-group">
+                <label for="quality">Qualidade da Compressão</label>
+                <select id="quality">
+                    <option value="/screen">Máxima Compressão (Visualização em Tela)</option>
+                    <option value="/ebook" selected>Equilibrado (Recomendado/Ebook)</option>
+                    <option value="/printer">Alta Qualidade (Impressão)</option>
+                </select>
+            </div>
+
+            <!-- Advanced Settings Section -->
+            <div class="advanced-section">
+                <button type="button" id="toggleAdvanced" class="btn-toggle">
+                    <span id="toggleIcon">▶</span> Configurações Avançadas do Ghostscript
+                </button>
+
+                <div id="advancedSettings" class="advanced-content" style="display: none;">
+
+                    <div class="settings-grid">
+                        <!-- PDF Settings -->
+                        <div class="form-group">
+                            <label for="pdfSettings">Predefinição PDF</label>
+                            <select id="pdfSettings">
+                                <option value="/screen">Screen (72 DPI)</option>
+                                <option value="/ebook">Ebook (150 DPI)</option>
+                                <option value="/printer" selected>Printer (300 DPI)</option>
+                                <option value="/prepress">Prepress (300 DPI)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="compatibilityLevel">Compatibilidade PDF</label>
+                            <select id="compatibilityLevel">
+                                <option value="1.3">PDF 1.3</option>
+                                <option value="1.4" selected>PDF 1.4</option>
+                                <option value="1.5">PDF 1.5</option>
+                                <option value="1.6">PDF 1.6</option>
+                                <option value="1.7">PDF 1.7</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Resolução de Imagens (DPI)</h3>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageResolution">Imagens Coloridas: <span
+                                    id="colorResValue">200</span></label>
+                            <input type="range" id="colorImageResolution" min="72" max="600" value="200" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageResolution">Imagens Cinza: <span id="grayResValue">200</span></label>
+                            <input type="range" id="grayImageResolution" min="72" max="600" value="200" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monoImageResolution">Imagens Mono: <span id="monoResValue">200</span></label>
+                            <input type="range" id="monoImageResolution" min="72" max="600" value="200" step="1">
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Filtros de Compressão</h3>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageFilter">Filtro Cor</label>
+                            <select id="colorImageFilter">
+                                <option value="/DCTEncode" selected>JPEG (DCTEncode)</option>
+                                <option value="/FlateEncode">ZIP (FlateEncode)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageFilter">Filtro Cinza</label>
+                            <select id="grayImageFilter">
+                                <option value="/DCTEncode" selected>JPEG (DCTEncode)</option>
+                                <option value="/FlateEncode">ZIP (FlateEncode)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Algoritmo de Downsampling</h3>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageDownsampleType">Cor</label>
+                            <select id="colorImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageDownsampleType">Cinza</label>
+                            <select id="grayImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monoImageDownsampleType">Mono</label>
+                            <select id="monoImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Opções de Fontes</h3>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="subsetFonts" checked>
+                            <span>Subset Fontes (incluir apenas caracteres usados)</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="compressFonts" checked>
+                            <span>Comprimir Fontes</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="embedAllFonts">
+                            <span>Embutir Todas as Fontes</span>
+                        </label>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Opções de Downsampling</h3>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="downsampleColorImages" checked>
+                            <span>Downsample Imagens Coloridas</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="downsampleGrayImages" checked>
+                            <span>Downsample Imagens Cinza</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="downsampleMonoImages" checked>
+                            <span>Downsample Imagens Mono</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="saveBtn" class="btn-primary">Salvar Configuração</button>
+                <button id="startBtn" class="btn-success">Iniciar Monitoramento</button>
+                <button id="stopBtn" class="btn-danger">Parar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <label>Logs do Sistema</label>
+            <div id="logArea" class="log-container">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

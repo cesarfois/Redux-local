@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Compressor Automator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>PDF Compressor <span id="statusIndicator" class="status-indicator"></span></h1>
+
+        <div class="card">
+            <div class="form-group">
+                <label for="sourcePath">Pasta de Origem (Watch Folder)</label>
+                <input type="text" id="sourcePath" placeholder="C:\Caminho\Para\Origem">
+            </div>
+
+            <div class="form-group">
+                <label for="destPath">Pasta de Destino</label>
+                <input type="text" id="destPath" placeholder="C:\Caminho\Para\Destino">
+            </div>
+
+            <!-- Advanced Settings Section -->
+            <div class="advanced-section">
+                <button type="button" id="toggleAdvanced" class="btn-toggle">
+                    <span id="toggleIcon">▶</span> Configurações Avançadas do Ghostscript
+                </button>
+
+                <div id="advancedSettings" class="advanced-content" style="display: none;">
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="pdfSettings">Predefinição PDF</label>
+                            <select id="pdfSettings">
+                                <option value="/screen" selected>Screen (72 DPI)</option>
+                                <option value="/ebook">Ebook (150 DPI)</option>
+                                <option value="/printer">Printer (300 DPI)</option>
+                                <option value="/prepress">Prepress (300 DPI)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="compatibilityLevel">Compatibilidade PDF</label>
+                            <select id="compatibilityLevel">
+                                <option value="1.3">PDF 1.3</option>
+                                <option value="1.4" selected>PDF 1.4</option>
+                                <option value="1.5">PDF 1.5</option>
+                                <option value="1.6">PDF 1.6</option>
+                                <option value="1.7">PDF 1.7</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Resolução de Imagens (DPI)</h3>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageResolution">Imagens Coloridas: <span
+                                    id="colorResValue">115</span></label>
+                            <input type="range" id="colorImageResolution" min="72" max="600" value="115" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageResolution">Imagens Cinza: <span id="grayResValue">115</span></label>
+                            <input type="range" id="grayImageResolution" min="72" max="600" value="115" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monoImageResolution">Imagens Mono: <span id="monoResValue">115</span></label>
+                            <input type="range" id="monoImageResolution" min="72" max="600" value="115" step="1">
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Algoritmo de Downsampling</h3>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageDownsampleType">Cor</label>
+                            <select id="colorImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageDownsampleType">Cinza</label>
+                            <select id="grayImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monoImageDownsampleType">Mono</label>
+                            <select id="monoImageDownsampleType">
+                                <option value="/Bicubic" selected>Bicubic (Suave)</option>
+                                <option value="/Average">Average (Médio)</option>
+                                <option value="/Subsample">Subsample (Rápido)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Threshold de Downsampling</h3>
+                    <p style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;">
+                        Threshold 1.0 = força redução em TODAS as imagens. Valores maiores permitem que imagens próximas
+                        da resolução alvo sejam ignoradas.
+                    </p>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label for="colorImageDownsampleThreshold">Threshold Cor: <span
+                                    id="colorThresholdValue">1.0</span></label>
+                            <input type="range" id="colorImageDownsampleThreshold" min="1.0" max="2.0" value="1.0"
+                                step="0.1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grayImageDownsampleThreshold">Threshold Cinza: <span
+                                    id="grayThresholdValue">1.0</span></label>
+                            <input type="range" id="grayImageDownsampleThreshold" min="1.0" max="2.0" value="1.0"
+                                step="0.1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monoImageDownsampleThreshold">Threshold Mono: <span
+                                    id="monoThresholdValue">1.0</span></label>
+                            <input type="range" id="monoImageDownsampleThreshold" min="1.0" max="2.0" value="1.0"
+                                step="0.1">
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3 class="section-title">Otimizações Adicionais</h3>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="detectDuplicateImages" checked>
+                            <span>Detectar Imagens Duplicadas (economiza espaço)</span>
+                        </label>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="compressPages" checked>
+                            <span>Comprimir Páginas (otimização extra)</span>
+                        </label>
+                    </div>
+
+                    <hr class="divider">
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button id="setDefaultBtn" class="btn-secondary" style="padding: 0.75rem 2rem;">
+                            🔄 Restaurar Padrão (/screen + 115 DPI)
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="saveBtn" class="btn-primary">Salvar Configuração</button>
+                <button id="startBtn" class="btn-success">Iniciar Monitoramento</button>
+                <button id="stopBtn" class="btn-danger">Parar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <label>Logs do Sistema</label>
+            <div id="logArea" class="log-container">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>

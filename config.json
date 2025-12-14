@@ -1,0 +1,19 @@
+{
+  "sourcePath": "C:\\Users\\Acer\\Documents\\Dws",
+  "destPath": "C:\\Users\\Acer\\Documents\\Dws out",
+  "quality": "/ebook",
+  "manualGsPath": null,
+  "pdfSettings": "/screen",
+  "compatibilityLevel": "1.4",
+  "colorImageResolution": 115,
+  "grayImageResolution": 115,
+  "monoImageResolution": 115,
+  "colorImageDownsampleType": "/Bicubic",
+  "grayImageDownsampleType": "/Bicubic",
+  "monoImageDownsampleType": "/Bicubic",
+  "colorImageDownsampleThreshold": 1.0,
+  "grayImageDownsampleThreshold": 1.0,
+  "monoImageDownsampleThreshold": 1.0,
+  "detectDuplicateImages": true,
+  "compressPages": true
+}
