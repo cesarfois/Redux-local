@@ -14,7 +14,7 @@ const logger = require('./src/utils/logger');
 const apiRoutes = require('./src/routes/api');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3002;
 
 // Middleware
 app.use(cors());

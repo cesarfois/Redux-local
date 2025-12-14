@@ -61,13 +61,27 @@ class WatcherService {
             return;
         }
 
+        // Import fileManager here to avoid circular dependencies
+        const fileManager = require('./fileManager');
+
+        // Skip files already in organization folders
+        if (fileManager.shouldIgnore(filePath)) {
+            return;
+        }
+
         logger.info(`New PDF detected: ${filePath}`);
 
+        let success = false;
         try {
             await ghostscript.compress(filePath);
+            success = true;
         } catch (error) {
             logger.error(`Compression error: ${error.message}`);
+            success = false;
         }
+
+        // Move file to appropriate folder
+        await fileManager.moveFile(filePath, success);
     }
 
     /**
