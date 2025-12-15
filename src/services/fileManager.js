@@ -26,40 +26,79 @@ class FileManager {
     }
 
     /**
-     * Move file to processed folder
+     * Sleep utility
+     * @param {number} ms - Milliseconds to sleep
+     * @returns {Promise}
+     */
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * Move file to processed folder with retry mechanism
      * @param {string} filePath - Original file path
      * @param {boolean} success - Whether processing was successful
      */
     async moveFile(filePath, success) {
-        try {
-            const fileName = path.basename(filePath);
-            const sourceDir = path.dirname(filePath);
+        const maxRetries = 5;
 
-            // Determine destination folder
-            const destFolder = success ? '_Processados' : '_Processados_Erro';
-            const destPath = path.join(sourceDir, destFolder, fileName);
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                const fileName = path.basename(filePath);
+                const sourceDir = path.dirname(filePath);
 
-            // Ensure folders exist
-            await this.ensureFolders(sourceDir);
+                // Determine destination folder
+                const destFolder = success ? '_Processados' : '_Processados_Erro';
+                const destPath = path.join(sourceDir, destFolder, fileName);
 
-            // Move file
-            await fs.rename(filePath, destPath);
+                // Ensure folders exist
+                await this.ensureFolders(sourceDir);
 
-            logger.info(`File moved to ${destFolder}: ${fileName}`);
-        } catch (error) {
-            logger.error(`Failed to move file ${filePath}: ${error.message}`);
-            // Don't throw - we don't want to stop processing if file move fails
+                // Wait a bit before attempting move (gives OS time to release handles)
+                if (attempt > 0) {
+                    const waitTime = attempt * 300; // 300ms, 600ms, 900ms, 1200ms, 1500ms
+                    logger.warning(`Retry ${attempt}/${maxRetries} after ${waitTime}ms...`);
+                    await this.sleep(waitTime);
+                }
+
+                // Move file
+                await fs.rename(filePath, destPath);
+
+                logger.info(`File moved to ${destFolder}: ${fileName}`);
+                return; // Success!
+
+            } catch (error) {
+                if ((error.code === 'EBUSY' || error.code === 'EPERM') && attempt < maxRetries - 1) {
+                    // Will retry
+                    continue;
+                } else {
+                    logger.error(`Failed to move file ${filePath} after ${attempt + 1} attempts: ${error.message}`);
+                    return; // Give up but don't throw
+                }
+            }
         }
     }
 
     /**
-     * Check if file should be ignored (already in organization folders)
+     * Check if file should be ignored (already in organization folders or temp files)
      * @param {string} filePath - File path to check
      * @returns {boolean} True if file should be ignored
      */
     shouldIgnore(filePath) {
         const normalized = path.normalize(filePath);
-        return normalized.includes('_Processados') || normalized.includes('_Processados_Erro');
+        const fileName = path.basename(filePath);
+
+        // Ignore files in processed folders
+        if (normalized.includes('_Processados') || normalized.includes('_Processados_Erro')) {
+            return true;
+        }
+
+        // Ignore temporary files (.temp1.pdf, .temp2.pdf, etc)
+        if (fileName.includes('.temp')) {
+            return true;
+        }
+
+        return false;
     }
 }
 

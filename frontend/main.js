@@ -46,7 +46,27 @@ const colorThresholdValue = document.getElementById('colorThresholdValue');
 const grayThresholdValue = document.getElementById('grayThresholdValue');
 const monoThresholdValue = document.getElementById('monoThresholdValue');
 
+// Folder browse buttons
+const browseSourceBtn = document.getElementById('browseSource');
+const browseDestBtn = document.getElementById('browseDest');
+
 let isRunning = false;
+
+// Folder selection handlers
+browseSourceBtn.addEventListener('click', () => {
+    const userPath = prompt('Cole o caminho da pasta de origem:', sourceInput.value);
+    if (userPath) {
+        sourceInput.value = userPath;
+    }
+});
+
+browseDestBtn.addEventListener('click', () => {
+    const userPath = prompt('Cole o caminho da pasta de destino:', destInput.value);
+    if (userPath) {
+        destInput.value = userPath;
+    }
+});
+
 
 // Toggle Advanced Settings
 toggleAdvancedBtn.addEventListener('click', () => {

@@ -4,25 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Compressor Automator</title>
+    <title>PDF Compressor Automator</title>
+    <link rel="icon" type="image/png" href="/assets/favicon-Cm7NAtxD.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-Dl55fMx1.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-D_Wkqt1h.css">
+  <script type="module" crossorigin src="/assets/index-DQgv5CFC.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BYHSLpb0.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>PDF Compressor <span id="statusIndicator" class="status-indicator"></span></h1>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <img src="/assets/logo-DYy_NtwF.png" alt="PDF Compressor Logo"
+                style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.3); background: white; padding: 8px;">
+            <h1 style="margin: 0;">PDF Compressor <span id="statusIndicator" class="status-indicator"></span></h1>
+        </div>
 
         <div class="card">
             <div class="form-group">
                 <label for="sourcePath">Pasta de Origem (Watch Folder)</label>
-                <input type="text" id="sourcePath" placeholder="C:\Caminho\Para\Origem">
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="sourcePath" placeholder="C:\Caminho\Para\Origem" style="flex: 1;">
+                    <button id="browseSource" class="btn-icon" title="Selecionar Pasta">
+                        📁
+                    </button>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="destPath">Pasta de Destino</label>
-                <input type="text" id="destPath" placeholder="C:\Caminho\Para\Destino">
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="destPath" placeholder="C:\Caminho\Para\Destino" style="flex: 1;">
+                    <button id="browseDest" class="btn-icon" title="Selecionar Pasta">
+                        📁
+                    </button>
+                </div>
             </div>
 
             <!-- Advanced Settings Section -->
